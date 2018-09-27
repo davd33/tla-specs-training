@@ -1,8 +1,9 @@
 Training for TLA+
 ===
 
-This repo is for me to learn TLA+ by specifying logical problems
-or practical implementations of actual coding.
+This repo is for me to learn TLA+ by specifying logical problems or practical implementations of actual coding.
+
+###### Check my [TLA+ Notes](./notes/Notes-1.md).
 
 
 
