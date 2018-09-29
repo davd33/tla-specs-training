@@ -123,6 +123,22 @@ TLC may miss errors if you claim a set is symmetrical when it's not!
 
 Imports the definitions from another specification (e.g. `TCommit`) into the current module (e.g. `TwoPhase`).
 
+### CHOOSE
+
+```
+CHOOSE v \in S : P
+```
+
+The formula above equals some such `v` if there is  a `v` in `S` for which `P` is true. If there's more than one, then the semantics of TLA+ don't specify which one. Else, if there's no such `v` then the value of the `CHOOSE` expression is completely unspecified (TLC will report an error if that's the case when it tries to evaluate the expression).
+
+For instance the value `v` of the following expression `CHOOSE i \in 0..99 : TRUE` is an unspecified integer between 1 and 99.
+
+**A `CHOOSE` expression always equals itself! There is no non-determinism in a mathematical expression.** TLC will always get the same value when evaluating a `CHOOSE` expression: we should not care what value.
+
+`x' \in 0..99` allows the value of `x` in the next state to be any number in `1..99`.
+
+`x' = CHOOSE i \in 0..99 : TRUE` allows the value of `x` in the next state to be one particular number.
+
 ### UNCHANGED
 
 `UNCHANGED << foo, bar >>` is equivalent to:
