@@ -3,6 +3,15 @@ TLA+ Notes
 
 
 
+Finding fault-tolerant distributed algorithms is hard.
+They're easy to get wrong, and hard to find errors by testing.
+
+We should get the algorithm right before we code.
+
+> Writing and checking a TLA+ spec is the best way I know to do that. _Leslie Lamport_
+
+
+
 ## Tips
 
 ### Primed variables
@@ -25,6 +34,12 @@ Even values like `42` and `"abc"` are sets, but the semantics of TLA+ don't say 
 
 Many popular programming languages allow only index from `0..n`.
 **Math and TLA+ allow function to have any set as its domain!** _(Even infinite sets as the set of all integers)_
+
+The first conjunctions of an action formula (e.g. `TMRcvPrepared(r)` in `TwoPhase`) that have no primes are **conditions on the first state of a step**: they are called **enabling conditions**.
+
+**ENABLING CONDITIONS GO FIRST IN AN ACTION FORMULA!**
+
+**An action formula is a formula that contains primed variables.**
 
 
 
@@ -69,4 +84,57 @@ So, the record `[prof |-> "Ted", num: 23]` is in the set above.
 \* can be abbreviated as:
 [f EXCEPT !.prof = "Red"]
 ```
+
+
+
+## Triples
+
+```<<rmState, tmState, msgs>>``` is an **ordered** triple.
+
+
+
+
+## Sets
+
+***A set cannot contain several copies of the same element.***
+
+The **subset of** a set is written in TLA+ as follows: **`\subseteq`**.
+
+The **union of** two sets is written: **`\cup` or `\union`**.
+
+**Adding an element to a set** can be done with a union: `tmPrepared' = tmPrepared \union {r}`.
+
+#### Symmetry sets
+
+In `TwoPhase` spec, all RMs are identical / interchangeable.
+
+Suppose that `RM = {r1, r2, r3}`, replacing `r1` with `r3` in one possible state yields another possible state. Exchanging `r1` and `r3` in all states of a behaviour `b` allowed by `TwoPhase` produces a behaviour `b1-3` allowed by `TwoPhase`. **Therefore, TLC does not have to check whether some properties of `TwoPhase` holds for behaviour `b1-3` if it has checked that it holds for behaviour `b`.**
+
+**Because the latter observation holds for interchanging any two elements of RM, RM is a symmetry set of the specification `TwoPhase`.**
+
+TLC will check fewer states if the model sets a symmetry set to a set of model values.
+TLC may miss errors if you claim a set is symmetrical when it's not!
+
+
+
+## Other formulas
+
+### INSTANCE
+
+Imports the definitions from another specification (e.g. `TCommit`) into the current module (e.g. `TwoPhase`).
+
+### UNCHANGED
+
+`UNCHANGED << foo, bar >>` is equivalent to:
+
+```
+foo' = foo
+bar' = bar
+```
+
+
+
+
+
+
 
