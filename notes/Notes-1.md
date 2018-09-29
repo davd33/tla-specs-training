@@ -137,7 +137,9 @@ For instance the value `v` of the following expression `CHOOSE i \in 0..99 : TRU
 
 `x' \in 0..99` allows the value of `x` in the next state to be any number in `1..99`.
 
-`x' = CHOOSE i \in 0..99 : TRUE` allows the value of `x` in the next state to be one particular number.
+`x' = CHOOSE i \in 0..99 : TRUE` allows the value of `x` in the next state to be one particular number (no reason we'd want to use this particular expression).
+
+**We should use the `CHOOSE` expression when there's exactly one `v` in `S` satisfying `P` or when it's part of a larger expression whose value doesn't depend on which `v` is chosen.**
 
 ### UNCHANGED
 
