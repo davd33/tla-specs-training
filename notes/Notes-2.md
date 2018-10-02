@@ -29,7 +29,7 @@ _The relation “happened before” (“→”) is defined here without using ph
 
 When _a → b_: it is possible that _a_ *causally affect* _b_.
 
-Two distinct events _a_ and _b_ are said to be concurrent if _a /→ b_ (_/→_ meaning “does not happen before”) and _b /→ a_* Two events are concurrent if neither can causally affect the other.
+Two distinct events _a_ and _b_ are said to be concurrent if _a /→ b_ (_/→_ meaning “does not happen before”) and _b /→ a_. Two events are concurrent if neither can causally affect the other.
 
 We assume that _a /→ a_ for any event _a_, so that “→” is an irreflexive partial ordering on the set of all events in the system.
 
