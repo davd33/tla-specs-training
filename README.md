@@ -3,7 +3,9 @@ Training for TLA+
 
 This repo is for me to learn TLA+ by specifying logical problems or practical implementations of actual coding.
 
-###### Check my [TLA+ Notes](./notes/Notes-1.md).
+Notes do read:
+ -  [TLA+ Notes](./notes/Notes-1.md)
+ -  [Clock paper from Leslie Lamport](./notes/Notes-2.md)
 
 
 
