@@ -23,9 +23,9 @@ _The relation “happened before” (“→”) is defined here without using ph
 
 **Definition:** The relation “→” on the set of events of a system is the smallest relation satisfying the following three conditions:
 
- 	1. If _a_ and _b_ are events in the same process, and _a_ comes before _b_, then _a → b_.
- 	2. If _a_ is the sending of a message by one process and _b_ is the receipt of the <u>same</u> message by another process, then _a → b_.
- 	3. If _a → b_ and _b → c_, then _a → c_.
+ 1. If _a_ and _b_ are events in the same process, and _a_ comes before _b_, then _a → b_.
+ 2. If _a_ is the sending of a message by one process and _b_ is the receipt of the <u>same</u> message by another process, then _a → b_.
+ 3. If _a → b_ and _b → c_, then _a → c_.
 
 When _a → b_: it is possible that _a_ *causally affect* _b_.
 
@@ -39,9 +39,9 @@ We assume that _a /→ a_ for any event _a_, so that “→” is an irreflexive
 
 ### The clock
 
-We define a clock _C~i~_ for each process _P~i~_ to be a function _C_ which assigns a number _C~i~(a)_ to any event _a_ in that process.
+We define a clock _C<sub>i</sub>_ for each process _P<sub>i</sub>_ to be a function _C_ which assigns a number _C<sub>i</sub>(a)_ to any event _a_ in that process.
 
-The entire system of clocks is represented by the function _C_ which assigns to any event _b_ the number _C(b)_, where _C(b) = C~j~(b)_ if _b_ is an event in process _P~j~_.
+The entire system of clocks is represented by the function _C_ which assigns to any event _b_ the number _C(b)_, where _C(b) = C<sub>j</sub>(b)_ if _b_ is an event in process _P<sub>j</sub>_.
 
 **Clock condition:** For any events _a, b_: if _a → b_ then _C(a) < C(b)_.
 
@@ -49,6 +49,6 @@ The converse condition do not hold!
 
 The clock condition is satisfied if the following two conditions hold:
 
-1. If _a_ and _b_ are events in process _P~i~_, and _a → b_, then _C~i~(a) < C~i~(b)_.
-2. If _a_ is the sending of a message by process _P~i~_ and _b_ is the receipt of that message by process _P~j~_, then _C~i~(a) < C~j~(b)_.
+1. If _a_ and _b_ are events in process _P<sub>i</sub>_, and _a → b_, then _C<sub>i</sub>(a) < C<sub>i</sub>(b)_.
+2. If _a_ is the sending of a message by process _P<sub>i</sub>_ and _b_ is the receipt of that message by process _P<sub>j</sub>_, then _C<sub>i</sub>(a) < C<sub>j</sub>(b)_.
 
