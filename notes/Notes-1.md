@@ -102,7 +102,25 @@ The **subset of** a set is written in TLA+ as follows: **`\subseteq`**.
 
 The **union of** two sets is written: **`\cup` or `\union`**.
 
+The **intersection of** two sets is typed either **`\intersect` or `\cap`**.
+
 **Adding an element to a set** can be done with a union: `tmPrepared' = tmPrepared \union {r}`.
+
+`S \ T` *(S - T)* is the set of elements in `S` that are not in `T`.
+
+#### Select subsets
+
+```
+{v \in S : P}
+```
+
+The subset of `S` containing all elements `v` satisfying the formula `P`.
+
+```
+{e : v \in S}
+```
+
+The set of all `e` for `v` in `S`.
 
 #### Symmetry sets
 
@@ -115,6 +133,10 @@ Suppose that `RM = {r1, r2, r3}`, replacing `r1` with `r3` in one possible state
 TLC will check fewer states if the model sets a symmetry set to a set of model values.
 TLC may miss errors if you claim a set is symmetrical when it's not!
 
+**It is OK to use elements of a symmetry set in an expression assigned to another constant if the expression is symmetric in the elements of the symmetry set** _(see Paxos Commit)_.
+
+<u>*Elements of a symmetry set, or a constant assigned elements of a symmetry set, may not appear in a `CHOOSE` expression!*</u>
+
 
 
 ## Other formulas
@@ -122,6 +144,16 @@ TLC may miss errors if you claim a set is symmetrical when it's not!
 ### INSTANCE
 
 Imports the definitions from another specification (e.g. `TCommit`) into the current module (e.g. `TwoPhase`).
+
+### SUBSET
+
+`SUBSET Acceptor` defines the set of all subsets of acceptors (in math the powerset `P(Acceptor)`).
+
+Example: `Majority \subseteq SUBSET Acceptor` defines the elements of `Majority` to be subsets of the set `Acceptor`.
+
+### ASSUME
+
+Asserts some expression **P**.
 
 ### CHOOSE
 
@@ -140,6 +172,10 @@ For instance the value `v` of the following expression `CHOOSE i \in 0..99 : TRU
 `x' = CHOOSE i \in 0..99 : TRUE` allows the value of `x` in the next state to be one particular number (no reason we'd want to use this particular expression).
 
 **We should use the `CHOOSE` expression when there's exactly one `v` in `S` satisfying `P` or when it's part of a larger expression whose value doesn't depend on which `v` is chosen.**
+
+### LET … IN
+
+Declares some variables local to the expression `LET IN`.
 
 ### UNCHANGED
 
