@@ -36,6 +36,7 @@ Maximum(S) ==
   (*************************************************************************)
   IF S = {} THEN -1
             ELSE CHOOSE n \in S : \A m \in S : n \geq m
+            (*S is final and non empty*)
 
 CONSTANT RM,             \* The set of resource managers.
          Acceptor,       \* The set of acceptors.
@@ -64,16 +65,36 @@ Messages ==
   (* acceptor to the leader; messages from a leader are broadcast to all   *)
   (* acceptors.                                                            *)
   (*************************************************************************)
-  [type : {"phase1a"}, ins : RM, bal : Ballot \ {0}] 
-      \cup
-  [type : {"phase1b"}, ins : RM, mbal : Ballot, bal : Ballot \cup {-1},
-   val : {"prepared", "aborted", "none"}, acc : Acceptor] 
-      \cup
-  [type : {"phase2a"}, ins : RM, bal : Ballot, val : {"prepared", "aborted"}]
-      \cup                              
-  [type : {"phase2b"}, acc : Acceptor, ins : RM, bal : Ballot,  
+  [type : {"phase1a"},
+   ins : RM, 
+   bal : Ballot \ {0}] 
+  
+  \cup
+  
+  [type : {"phase1b"},
+   ins : RM, 
+   mbal : Ballot,
+   bal : Ballot \cup {-1},
+   val : {"prepared", "aborted", "none"},
+   acc : Acceptor] 
+   
+  \cup
+  
+  [type : {"phase2a"}, 
+   ins : RM, 
+   bal : Ballot, 
+   val : {"prepared", "aborted"}]
+  
+  \cup   
+                             
+  [type : {"phase2b"},
+   acc : Acceptor, 
+   ins : RM, 
+   bal : Ballot,  
    val : {"prepared", "aborted"}] 
-      \cup
+   
+   \cup
+   
   [type : {"Commit", "Abort"}]
 -----------------------------------------------------------------------------
 VARIABLES
@@ -96,9 +117,9 @@ PCTypeOK ==
 
 PCInit ==  \* The initial predicate.
   /\ rmState = [r \in RM |-> "working"]
-  /\ aState  = [r \in RM |-> 
-                 [ac \in Acceptor 
-                    |-> [mbal |-> 0, bal  |-> -1, val  |-> "none"]]]
+  /\ aState  = [r \in RM |-> [ac \in Acceptor |-> [mbal |-> 0,
+                                                   bal  |-> -1, 
+                                                   val  |-> "none"]]]
   /\ msgs = {}
 -----------------------------------------------------------------------------
 (***************************************************************************)
@@ -216,8 +237,11 @@ PCDecide ==
            (* chosen the value v.                                          *)
            (****************************************************************)
            \E b \in Ballot, MS \in Majority : 
-             \A ac \in MS : [type |-> "phase2b", ins |-> r, 
-                              bal |-> b, val |-> v, acc |-> ac ] \in msgs
+             \A ac \in MS : [type |-> "phase2b",
+                             ins |-> r, 
+                             bal |-> b, 
+                             val |-> v, 
+                             acc |-> ac ] \in msgs
      IN  \/ /\ \A r \in RM : Decided(r, "prepared")
             /\ Send([type |-> "Commit"])
          \/ /\ \E r \in RM : Decided(r, "aborted")
@@ -259,6 +283,14 @@ PCNext ==  \* The next-state action
   \/ \E bal \in Ballot \ {0}, r \in RM : Phase1a(bal, r) \/ Phase2a(bal, r)
   \/ PCDecide
   \/ \E acc \in Acceptor : Phase1b(acc) \/ Phase2b(acc) 
+-----------------------------------------------------------------------------
+(***************************************************************************)
+(* Invariants to understand the specification.                             *)
+(***************************************************************************)
+NotAllHaveCommitted == ~ \A r \in RM : rmState[r] = "committed"
+NotAllHaveAborted == ~
+  /\ \A r \in RM : rmState[r] = "aborted"
+  /\ [type |-> "Abort"] \in msgs
 -----------------------------------------------------------------------------
 (***************************************************************************)
 (* The following part of the spec is not covered in Lecture 7.  It will be *)
